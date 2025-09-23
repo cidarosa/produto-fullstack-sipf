@@ -1,13 +1,12 @@
-
+import { Box } from "@mui/material";
+import Header from "./components/Header";
 
 function App() {
-
-
   return (
-    <>
-     <h1>Aqui é onde colocaremos o nosso código</h1>
-    </>
-  )
+    <Box>
+      <Header title="Gestão de Produtos" />
+    </Box>
+  );
 }
 
-export default App
+export default App;
