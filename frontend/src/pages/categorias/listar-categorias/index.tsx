@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   Paper,
@@ -8,11 +9,21 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import type { CategoriaDTO } from "../../../models/categoria";
+
+import * as categoriaService from "../../../services/categoria-service.ts";
 
 export default function ListarCategorias() {
+  const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
 
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      const data = await categoriaService.findAll();
+      setCategorias(data);
+    };
+  }, []);
 
-  
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom>
