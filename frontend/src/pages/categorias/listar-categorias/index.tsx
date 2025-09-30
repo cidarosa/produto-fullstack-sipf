@@ -2,6 +2,7 @@
 import {
   Box,
   CircularProgress,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -16,6 +17,8 @@ import type { CategoriaDTO } from "../../../models/categoria";
 
 import * as categoriaService from "../../../services/categoria-service.ts";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { Delete, Edit } from "@mui/icons-material";
 
 export default function ListarCategorias() {
   const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
@@ -60,6 +63,7 @@ export default function ListarCategorias() {
                   <TableRow>
                     <TableCell>ID</TableCell>
                     <TableCell>Nome</TableCell>
+                    <TableCell>Ações</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -67,9 +71,25 @@ export default function ListarCategorias() {
                     <TableRow key={categoria.id}>
                       <TableCell>{categoria.id}</TableCell>
                       <TableCell>{categoria.nome}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label="editar"
+                          component={Link}
+                          to={`/categorias/${categoria.id}/editar`}
+                        >
+                          <Edit />
+                        </IconButton>
+                        <IconButton
+                          aria-label="excluir"
+                          onClick={() =>
+                            console.log("Excluir categoria ", categoria.id)
+                          }
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
-
                 </TableBody>
               </Table>
             </TableContainer>
