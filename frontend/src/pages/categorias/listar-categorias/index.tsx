@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  Alert,
   Box,
   CircularProgress,
   IconButton,
@@ -25,6 +26,7 @@ export default function ListarCategorias() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -44,10 +46,39 @@ export default function ListarCategorias() {
     fetchCategorias();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    if ( window.confirm(`Tem certeza que deseja exluir a categoria ID: ${id}?`)) 
+      try {
+        await categoriaService.deleteById(id);
+        setCategorias(categorias.filter((categoria) => categoria.id !== id));
+        setSuccess("Categoria excluída com sucesso");
+        setTimeout(() => setSuccess(null), 3000);
+      } catch (error: unknown) {
+        let msg = "Erro ao excluir categoria";
+        if (axios.isAxiosError(error) && error.response) {
+          msg = error.response.data.error || msg;
+        }
+        setSuccess(null);
+        setError(msg);
+        setTimeout(() => setError(null), 4000);
+      }    
+  }
+
   return (
     <Box sx={{ p: 4 }}>
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
       <Typography variant="h4" component="h1" gutterBottom>
-        Listagem de Categorias
+        Categorias
       </Typography>
 
       {loading ? (
@@ -81,9 +112,8 @@ export default function ListarCategorias() {
                         </IconButton>
                         <IconButton
                           aria-label="excluir"
-                          onClick={() =>
-                            console.log("Excluir categoria ", categoria.id)
-                          }
+                          onClick={() => handleDelete(categoria.id)}
+                          sx={{ml: 1}}
                         >
                           <Delete />
                         </IconButton>
