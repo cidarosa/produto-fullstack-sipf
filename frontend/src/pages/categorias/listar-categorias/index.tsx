@@ -2,6 +2,7 @@
 import {
   Alert,
   Box,
+  Button,
   CircularProgress,
   IconButton,
   Paper,
@@ -47,7 +48,7 @@ export default function ListarCategorias() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if ( window.confirm(`Tem certeza que deseja exluir a categoria ID: ${id}?`)) 
+    if (window.confirm(`Tem certeza que deseja exluir a categoria ID: ${id}?`))
       try {
         await categoriaService.deleteById(id);
         setCategorias(categorias.filter((categoria) => categoria.id !== id));
@@ -61,11 +62,33 @@ export default function ListarCategorias() {
         setSuccess(null);
         setError(msg);
         setTimeout(() => setError(null), 4000);
-      }    
-  }
+      }
+  };
 
   return (
     <Box sx={{ p: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom>
+          Categorias
+        </Typography>
+
+        <Button variant="contained">
+          <Link
+            to="/categorias/novo"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Novo
+          </Link>
+        </Button>
+      </Box>
+
       {success && (
         <Alert severity="success" sx={{ mb: 2 }}>
           {success}
@@ -76,10 +99,6 @@ export default function ListarCategorias() {
           {error}
         </Alert>
       )}
-
-      <Typography variant="h4" component="h1" gutterBottom>
-        Categorias
-      </Typography>
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
@@ -113,7 +132,7 @@ export default function ListarCategorias() {
                         <IconButton
                           aria-label="excluir"
                           onClick={() => handleDelete(categoria.id)}
-                          sx={{ml: 1}}
+                          sx={{ ml: 1 }}
                         >
                           <Delete />
                         </IconButton>
